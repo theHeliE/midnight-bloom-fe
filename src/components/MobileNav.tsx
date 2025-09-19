@@ -48,7 +48,7 @@ export function MobileMenu() {
         <Button 
           variant="ghost" 
           size="icon"
-          className={`${theme === "dark" ? "text-white hover:bg-white/10" : "text-black hover:bg-black/10"} border border-border`}
+          className={`${theme === "dark" ? "text-purple-300" :  "text-purple-700"} border border-border`}
         >
           <Menu size={20} />
         </Button>
