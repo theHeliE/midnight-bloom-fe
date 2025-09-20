@@ -23,7 +23,9 @@ import { ModeToggle } from "./ThemeButton"
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false)
-  const { theme } = useTheme()
+  const { theme, resolvedTheme } = useTheme();
+  console.log(theme);
+  console.log(resolvedTheme);
   const [mounted, setMounted] = useState(false)
 
   // Fix hydration issue
@@ -56,7 +58,7 @@ export function MobileMenu() {
       <SheetContent 
         side="left" 
         className={`${
-          theme === "dark" 
+          resolvedTheme === "dark" 
             ? "bg-gradient-to-b from-purple-900/95 to-black/95 backdrop-blur-xl border-purple-800/50" 
             : "bg-gradient-to-b from-white/95 via-purple-100/95 to-pink-300/95 backdrop-blur-xl border-pink-200/50"
         } p-0 overflow-y-auto max-h-screen`}
@@ -64,7 +66,7 @@ export function MobileMenu() {
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <SheetHeader>
-              <SheetTitle className={`text-2xl font-bold ${theme === "dark" ? "text-purple-300" :  "text-purple-700"}`}>
+              <SheetTitle className={`text-2xl font-bold ${resolvedTheme === "dark" ? "text-purple-300" :  "text-purple-700"}`}>
                 Midnight Bloom
               </SheetTitle>
             </SheetHeader>
@@ -78,7 +80,7 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  theme === "dark" 
+                  resolvedTheme === "dark" 
                     ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
@@ -88,14 +90,14 @@ export function MobileMenu() {
                   Home
                 </Link>
               </Button>
-                <h3 className={`uppercase text-xs font-semibold tracking-wider mb-4 ${theme === "dark" ? "text-purple-300" : "text-purple-700"}`}>
+                <h3 className={`uppercase text-xs font-semibold tracking-wider mb-4 ${resolvedTheme === "dark" ? "text-purple-300" : "text-purple-700"}`}>
                 Discover
                 </h3>
               <Button
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  theme === "dark" 
+                  resolvedTheme === "dark" 
                     ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
@@ -109,7 +111,7 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  theme === "dark" 
+                  resolvedTheme === "dark" 
                     ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
@@ -123,7 +125,7 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  theme === "dark" 
+                  resolvedTheme === "dark" 
                     ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
@@ -137,7 +139,7 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  theme === "dark" 
+                  resolvedTheme === "dark" 
                     ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
@@ -152,7 +154,7 @@ export function MobileMenu() {
 
           {/* INFO SECTION */}
           <div className="mb-8">
-            <h3 className={`uppercase text-xs font-semibold tracking-wider mb-4 ${theme === "dark" ? "text-purple-300" : "text-purple-700"}`}>
+            <h3 className={`uppercase text-xs font-semibold tracking-wider mb-4 ${resolvedTheme === "dark" ? "text-purple-300" : "text-purple-700"}`}>
               About Us
             </h3>
             <div className="space-y-2">
@@ -160,7 +162,7 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  theme === "dark" 
+                  resolvedTheme === "dark" 
                     ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
@@ -174,7 +176,7 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  theme === "dark" 
+                  resolvedTheme === "dark" 
                     ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
@@ -188,7 +190,7 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  theme === "dark" 
+                  resolvedTheme === "dark" 
                     ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
@@ -203,7 +205,7 @@ export function MobileMenu() {
 
           {/* ACCOUNT SECTION */}
           <div className="pb-6">
-            <h3 className={`uppercase text-xs font-semibold tracking-wider mb-4 ${theme === "dark" ? "text-purple-300" : "text-purple-700"}`}>
+            <h3 className={`uppercase text-xs font-semibold tracking-wider mb-4 ${resolvedTheme === "dark" ? "text-purple-300" : "text-purple-700"}`}>
               Account
             </h3>
             <div className="space-y-2">
@@ -211,7 +213,7 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  theme === "dark" 
+                  resolvedTheme === "dark" 
                     ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
@@ -225,7 +227,7 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  theme === "dark" 
+                  resolvedTheme === "dark" 
                     ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
@@ -239,7 +241,7 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  theme === "dark" 
+                  resolvedTheme === "dark" 
                     ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
