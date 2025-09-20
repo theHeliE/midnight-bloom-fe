@@ -23,7 +23,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export function Navbar() {
   return (
-    <NavigationMenu viewport={false}>
+    <NavigationMenu viewport={false} className="z-50">
       <NavigationMenuList>
         <NavigationMenuItem>
             <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
@@ -32,7 +32,7 @@ export function Navbar() {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Discover</NavigationMenuTrigger>
-          <NavigationMenuContent>
+          <NavigationMenuContent className="z-50">
             <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
@@ -59,7 +59,7 @@ export function Navbar() {
                 Small bottle. Big impression.
               </ListItem>
             </ul>
-          </NavigationMenuContent>
+          </NavigationMenuContent >
         </NavigationMenuItem>
         <NavigationMenuItem>
             <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
@@ -69,7 +69,7 @@ export function Navbar() {
   
         <NavigationMenuItem>
           <NavigationMenuTrigger>About Us</NavigationMenuTrigger>
-          <NavigationMenuContent>
+          <NavigationMenuContent className="z-50">
             <ul className="grid w-[300px] gap-4">
               <li>
                 <NavigationMenuLink asChild>
@@ -116,7 +116,7 @@ export function Navbar() {
                 <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
             </NavigationMenuTrigger>
-          <NavigationMenuContent>
+          <NavigationMenuContent className="z-50">
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild>

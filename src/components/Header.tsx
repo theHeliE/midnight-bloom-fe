@@ -3,7 +3,7 @@ import { MobileMenu } from "@/components/MobileNav"
 
 export function Header() {
   return (
-    <header className="flex items-center justify-between p-4">
+    <header className="flex items-center justify-between p-4 z-50">
       {/* Desktop Navbar */}
       <div className="hidden md:block">
         <Navbar />

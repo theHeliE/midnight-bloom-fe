@@ -7,6 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useTheme as useThemes } from "next-themes";
 
 import { Card, CardContent } from "@/components/ui/card"
 
@@ -15,6 +16,8 @@ import { Product } from "@/Types/Products";
 
 export function Products({ category }: { category: number }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const theme = useThemes();
+
   const products : Product[] = [
     {
       id: "1",
@@ -105,11 +108,11 @@ export function Products({ category }: { category: number }) {
         }}
         className="max-w-full px-2 md:px-4 ml-px-2 md:ml-4"
         >
-        <CarouselContent className="">
+        <CarouselContent>
             {products.map((product, index) => (
             <CarouselItem key={index} className="px-px-2 basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                 <div className="p-1">
-                <Card className="w-full">
+                <Card className={`w-full h-full ${theme.theme === "dark" ? "border-purple-700" : "border-purple-300"} hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1`}>
                     <CardContent className="flex flex-col aspect-square items-center justify-center p-6">
                     <span className="text-xl md:text-2xl lg:text-3xl font-semibold text-center">{product.name}</span>
                     {/* <Image src={product.imageUrl} alt={product.name} width={200} height={200} /> */}
@@ -124,10 +127,10 @@ export function Products({ category }: { category: number }) {
             ))}
         </CarouselContent>
             <div className="flex justify-center gap-4 mt-6">
-            <CarouselPrevious className="relative left-auto right-auto flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-md">
+            <CarouselPrevious className={`relative left-auto right-auto flex items-center justify-center w-10 h-10 rounded-full shadow-md ${theme.theme === "dark" ? "bg-gray-800 text-white border-purple-700" : "bg-white text-purple-700 border-purple-300"}`}>
                 <span className="text-gray-600">&lt;</span>
             </CarouselPrevious>
-            <CarouselNext className="relative left-auto right-auto flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-md">
+            <CarouselNext className={`relative left-auto right-auto flex items-center justify-center w-10 h-10 rounded-full shadow-md ${theme.theme === "dark" ? "bg-gray-800 text-white border-purple-700" : "bg-white text-purple-700 border-purple-300"}`}>
                 <span className="text-gray-600">&gt;</span>
             </CarouselNext>
         </div>
