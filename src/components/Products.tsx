@@ -15,8 +15,18 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Product } from "@/Types/Products";
 
 export function Products({ category }: { category: number }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const theme = useThemes();
+    const [mounted, setMounted] = React.useState(false);
+    const theme = useThemes();
+
+    React.useEffect(() => {
+    setMounted(true);
+    }, []);
+
+    if (!mounted) {
+    // Avoid mismatches — render a skeleton or neutral state
+    return null;
+    }
+
 
   const products : Product[] = [
     {

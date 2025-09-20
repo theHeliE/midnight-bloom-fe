@@ -48,7 +48,7 @@ export function MobileMenu() {
         <Button 
           variant="ghost" 
           size="icon"
-          className={`${theme === "dark" ? "text-purple-300" :  "text-purple-700"} border border-border`}
+          className="text-purple-300 dark:text-purple-700 border border-border"
         >
           <Menu size={20} />
         </Button>

@@ -116,8 +116,10 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
-    @apply text-foreground;
+    color: var(--foreground);       
     background: var(--background);
   }
 }
+
