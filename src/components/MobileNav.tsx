@@ -1,10 +1,16 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { useTheme } from "next-themes"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import {
   ShoppingCart,
   History,
@@ -18,22 +24,62 @@ import {
   Info,
   Menu,
   Scale,
-} from "lucide-react"
-import { ModeToggle } from "./ThemeButton"
+  LogIn,
+  LogOut,
+} from "lucide-react";
+import { ModeToggle } from "./ThemeButton";
 
 export function MobileMenu() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
   const { theme, resolvedTheme } = useTheme();
   console.log(theme);
   console.log(resolvedTheme);
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   // Fix hydration issue
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  const closeMenu = () => setOpen(false)
+  // Check for authentication token
+  useEffect(() => {
+    if (mounted) {
+      const storedToken = localStorage.getItem("token");
+      setToken(storedToken);
+      console.log("Token:", storedToken);
+    }
+  }, [mounted]);
+
+  const handleLogout = async () => {
+    try {
+      // Call your backend logout API
+      const response = await fetch("http://localhost:5000/users/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        console.log("Logout successful");
+      } else {
+        console.error("Logout failed:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      // Clear token from localStorage and component state
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+      }
+      setToken(null);
+      setOpen(false); // Close mobile menu after logout
+    }
+  };
+
+  const closeMenu = () => setOpen(false);
 
   // Prevent hydration mismatch
   if (!mounted) {
@@ -41,32 +87,38 @@ export function MobileMenu() {
       <Button variant="ghost" size="icon" className="text-foreground">
         <Menu size={20} />
       </Button>
-    )
+    );
   }
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           size="icon"
           className="text-purple-300 dark:text-purple-700 border border-border"
         >
           <Menu size={20} />
         </Button>
       </SheetTrigger>
-      <SheetContent 
-        side="left" 
+      <SheetContent
+        side="left"
         className={`${
-          resolvedTheme === "dark" 
-            ? "bg-gradient-to-b from-purple-900/95 to-black/95 backdrop-blur-xl border-purple-800/50" 
+          resolvedTheme === "dark"
+            ? "bg-gradient-to-b from-purple-900/95 to-black/95 backdrop-blur-xl border-purple-800/50"
             : "bg-gradient-to-b from-white/95 via-purple-100/95 to-pink-300/95 backdrop-blur-xl border-pink-200/50"
         } p-0 overflow-y-auto max-h-screen`}
       >
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <SheetHeader>
-              <SheetTitle className={`text-2xl font-bold ${resolvedTheme === "dark" ? "text-purple-300" :  "text-purple-700"}`}>
+              <SheetTitle
+                className={`text-2xl font-bold ${
+                  resolvedTheme === "dark"
+                    ? "text-purple-300"
+                    : "text-purple-700"
+                }`}
+              >
                 Midnight Bloom
               </SheetTitle>
             </SheetHeader>
@@ -80,8 +132,8 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  resolvedTheme === "dark" 
-                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
+                  resolvedTheme === "dark"
+                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
               >
@@ -90,15 +142,21 @@ export function MobileMenu() {
                   Home
                 </Link>
               </Button>
-                <h3 className={`uppercase text-xs font-semibold tracking-wider mb-4 ${resolvedTheme === "dark" ? "text-purple-300" : "text-purple-700"}`}>
+              <h3
+                className={`uppercase text-xs font-semibold tracking-wider mb-4 ${
+                  resolvedTheme === "dark"
+                    ? "text-purple-300"
+                    : "text-purple-700"
+                }`}
+              >
                 Discover
-                </h3>
+              </h3>
               <Button
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  resolvedTheme === "dark" 
-                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
+                  resolvedTheme === "dark"
+                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
               >
@@ -111,8 +169,8 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  resolvedTheme === "dark" 
-                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
+                  resolvedTheme === "dark"
+                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
               >
@@ -125,8 +183,8 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  resolvedTheme === "dark" 
-                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
+                  resolvedTheme === "dark"
+                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
               >
@@ -139,8 +197,8 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  resolvedTheme === "dark" 
-                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
+                  resolvedTheme === "dark"
+                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
               >
@@ -154,7 +212,11 @@ export function MobileMenu() {
 
           {/* INFO SECTION */}
           <div className="mb-8">
-            <h3 className={`uppercase text-xs font-semibold tracking-wider mb-4 ${resolvedTheme === "dark" ? "text-purple-300" : "text-purple-700"}`}>
+            <h3
+              className={`uppercase text-xs font-semibold tracking-wider mb-4 ${
+                resolvedTheme === "dark" ? "text-purple-300" : "text-purple-700"
+              }`}
+            >
               About Us
             </h3>
             <div className="space-y-2">
@@ -162,8 +224,8 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  resolvedTheme === "dark" 
-                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
+                  resolvedTheme === "dark"
+                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
               >
@@ -176,8 +238,8 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  resolvedTheme === "dark" 
-                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
+                  resolvedTheme === "dark"
+                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
               >
@@ -190,8 +252,8 @@ export function MobileMenu() {
                 variant="ghost"
                 asChild
                 className={`w-full justify-start h-12 text-base ${
-                  resolvedTheme === "dark" 
-                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
+                  resolvedTheme === "dark"
+                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
                     : "text-black hover:bg-purple-100 hover:text-purple-700"
                 }`}
               >
@@ -205,56 +267,91 @@ export function MobileMenu() {
 
           {/* ACCOUNT SECTION */}
           <div className="pb-6">
-            <h3 className={`uppercase text-xs font-semibold tracking-wider mb-4 ${resolvedTheme === "dark" ? "text-purple-300" : "text-purple-700"}`}>
+            <h3
+              className={`uppercase text-xs font-semibold tracking-wider mb-4 ${
+                resolvedTheme === "dark" ? "text-purple-300" : "text-purple-700"
+              }`}
+            >
               Account
             </h3>
             <div className="space-y-2">
-              <Button
-                variant="ghost"
-                asChild
-                className={`w-full justify-start h-12 text-base ${
-                  resolvedTheme === "dark" 
-                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
-                    : "text-black hover:bg-purple-100 hover:text-purple-700"
-                }`}
-              >
-                <Link href="/cart" onClick={closeMenu}>
-                  <ShoppingCart size={20} className="mr-3" />
-                  Cart
-                </Link>
-              </Button>
-              <Button
-                variant="ghost"
-                asChild
-                className={`w-full justify-start h-12 text-base ${
-                  resolvedTheme === "dark" 
-                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
-                    : "text-black hover:bg-purple-100 hover:text-purple-700"
-                }`}
-              >
-                <Link href="/history" onClick={closeMenu}>
-                  <History size={20} className="mr-3" />
-                  Order History
-                </Link>
-              </Button>
-              <Button
-                variant="ghost"
-                asChild
-                className={`w-full justify-start h-12 text-base ${
-                  resolvedTheme === "dark" 
-                    ? "text-white hover:bg-purple-800/30 hover:text-purple-200" 
-                    : "text-black hover:bg-purple-100 hover:text-purple-700"
-                }`}
-              >
-                <Link href="/settings" onClick={closeMenu}>
-                  <Settings size={20} className="mr-3" />
-                  Settings
-                </Link>
-              </Button>
+              {token ? (
+                <>
+                  <Button
+                    variant="ghost"
+                    asChild
+                    className={`w-full justify-start h-12 text-base ${
+                      resolvedTheme === "dark"
+                        ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
+                        : "text-black hover:bg-purple-100 hover:text-purple-700"
+                    }`}
+                  >
+                    <Link href="/cart" onClick={closeMenu}>
+                      <ShoppingCart size={20} className="mr-3" />
+                      Cart
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    asChild
+                    className={`w-full justify-start h-12 text-base ${
+                      resolvedTheme === "dark"
+                        ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
+                        : "text-black hover:bg-purple-100 hover:text-purple-700"
+                    }`}
+                  >
+                    <Link href="/history" onClick={closeMenu}>
+                      <History size={20} className="mr-3" />
+                      Order History
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    asChild
+                    className={`w-full justify-start h-12 text-base ${
+                      resolvedTheme === "dark"
+                        ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
+                        : "text-black hover:bg-purple-100 hover:text-purple-700"
+                    }`}
+                  >
+                    <Link href="/settings" onClick={closeMenu}>
+                      <Settings size={20} className="mr-3" />
+                      Settings
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={handleLogout}
+                    className={`w-full justify-start h-12 text-base ${
+                      resolvedTheme === "dark"
+                        ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
+                        : "text-black hover:bg-purple-100 hover:text-purple-700"
+                    }`}
+                  >
+                    <LogOut size={20} className="mr-3" />
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  variant="ghost"
+                  asChild
+                  className={`w-full justify-start h-12 text-base ${
+                    resolvedTheme === "dark"
+                      ? "text-white hover:bg-purple-800/30 hover:text-purple-200"
+                      : "text-black hover:bg-purple-100 hover:text-purple-700"
+                  }`}
+                >
+                  <Link href="/login" onClick={closeMenu}>
+                    <LogIn size={20} className="mr-3" />
+                    Login
+                  </Link>
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

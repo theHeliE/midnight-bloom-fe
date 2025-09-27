@@ -1,10 +1,22 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { Settings, ShoppingCart, History, Mars, Venus, Backpack, BadgeCheck, Scale, Headset } from "lucide-react"
+import * as React from "react";
+import Link from "next/link";
+import {
+  Settings,
+  ShoppingCart,
+  History,
+  Mars,
+  Venus,
+  Backpack,
+  BadgeCheck,
+  Scale,
+  Headset,
+  LogIn,
+  LogOut,
+} from "lucide-react";
 
-import { ListItem } from "./ListItem"
+import { ListItem } from "./ListItem";
 
 import {
   NavigationMenu,
@@ -14,21 +26,56 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
 
-import { ModeToggle } from "./ThemeButton"
+import { ModeToggle } from "./ThemeButton";
 
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useState } from "react";
 
 export function Navbar() {
+  const [token, setToken] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    // Only runs in the browser
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+    console.log("Token:", storedToken);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      // Call your backend logout API
+      const response = await fetch("http://localhost:5000/users/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token if your API requires it
+        },
+      });
+
+      if (response.ok) {
+        console.log("Logout successful");
+      } else {
+        console.error("Logout failed:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      // Clear token from localStorage and component state regardless of API response
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+      }
+      setToken(null);
+    }
+  };
   return (
     <NavigationMenu viewport={false} className="z-50">
       <NavigationMenuList>
         <NavigationMenuItem>
-            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/">Home</Link>
-            </NavigationMenuLink>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link href="/">Home</Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Discover</NavigationMenuTrigger>
@@ -49,24 +96,36 @@ export function Navbar() {
                   </Link>
                 </NavigationMenuLink>
               </li>
-              <ListItem href="/men" title="Men Perfumes" icon={<Mars className="h-4 w-4" />}>
+              <ListItem
+                href="/"
+                title="Men Perfumes"
+                icon={<Mars className="h-4 w-4" />}
+              >
                 Confidence in every spray.
               </ListItem>
-              <ListItem href="/women" title="Women Perfumes" icon={<Venus className="h-4 w-4" />}>
+              <ListItem
+                href="/"
+                title="Women Perfumes"
+                icon={<Venus className="h-4 w-4" />}
+              >
                 Elegance you can wear.
               </ListItem>
-              <ListItem href="/travel" title="Travel Size" icon={<Backpack className="h-4 w-4" />}>
+              <ListItem
+                href="/"
+                title="Travel Size"
+                icon={<Backpack className="h-4 w-4" />}
+              >
                 Small bottle. Big impression.
               </ListItem>
             </ul>
-          </NavigationMenuContent >
+          </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/">Discounts</Link>
-            </NavigationMenuLink>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link href="/">Discounts</Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
-  
+
         <NavigationMenuItem>
           <NavigationMenuTrigger>About Us</NavigationMenuTrigger>
           <NavigationMenuContent className="z-50">
@@ -75,19 +134,19 @@ export function Navbar() {
                 <NavigationMenuLink asChild>
                   <Link href="#">
                     <div className="font-medium">
-                        <BadgeCheck />
-                        Social Media
+                      <BadgeCheck />
+                      Social Media
                     </div>
                     <div className="text-muted-foreground">
-                        Follow us on social media.
+                      Follow us on social media.
                     </div>
                   </Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
                   <Link href="#">
                     <div className="font-medium">
-                        <Scale />
-                        Privacy Policy
+                      <Scale />
+                      Privacy Policy
                     </div>
                     <div className="text-muted-foreground">
                       Learn how we handle your data.
@@ -97,8 +156,8 @@ export function Navbar() {
                 <NavigationMenuLink asChild>
                   <Link href="#">
                     <div className="font-medium">
-                        <Headset />
-                        Contact Us
+                      <Headset />
+                      Contact Us
                     </div>
                     <div className="text-muted-foreground">
                       Get in touch with our support team.
@@ -110,42 +169,65 @@ export function Navbar() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger style={{ }}> 
+          <NavigationMenuTrigger style={{}}>
             <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-            </NavigationMenuTrigger>
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          </NavigationMenuTrigger>
           <NavigationMenuContent className="z-50">
             <ul className="grid w-[200px] gap-4">
               <li>
-                <NavigationMenuLink asChild>
-                  <Link href="#" className="flex-row items-center gap-2">
-                    <ShoppingCart />
-                    Cart
-                  </Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link href="#" className="flex-row items-center gap-2">
-                    <History />
-                    History
-                  </Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link href="#" className="flex-row items-center gap-2">
-                    <Settings />
-                    Settings
-                  </Link>
-                </NavigationMenuLink>
+                {token ? (
+                  <>
+                    <NavigationMenuLink asChild>
+                      <Link href="#" className="flex-row items-center gap-2">
+                        <ShoppingCart />
+                        Cart
+                      </Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link href="#" className="flex-row items-center gap-2">
+                        <History />
+                        History
+                      </Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link href="#" className="flex-row items-center gap-2">
+                        <Settings />
+                        Settings
+                      </Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleLogout();
+                        }}
+                        className="flex-row items-center gap-2"
+                      >
+                        <LogOut />
+                        Logout
+                      </Link>
+                    </NavigationMenuLink>
+                  </>
+                ) : (
+                  <NavigationMenuLink asChild>
+                    <Link href="/login" className="flex-row items-center gap-2">
+                      <LogIn />
+                      Login
+                    </Link>
+                  </NavigationMenuLink>
+                )}
               </li>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-            <ModeToggle />
+          <ModeToggle />
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 }
-
